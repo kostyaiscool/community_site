@@ -1,0 +1,18 @@
+.square {
+  width: 14.2857%; /* 1/7 of the screen */
+  height: 100vh; /* full height of the screen */
+  background-color: yellow;
+  float: left;
+  position: fixed;
+  margin-top: 0px;
+  margin-left: 0px;
+}
+
+.circle {
+  width: 100px;
+  height: 100px;
+  background-color: black;
+  border-radius: 50%; /* to create a circle */
+  position: absolute;
+  bottom: 0;
+}

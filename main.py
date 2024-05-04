@@ -1,19 +1,32 @@
-from flask import Flask, render_template, request
+from flask_login import LoginManager
+
+from init_db import db
+from flask import Flask
+
 from frame.views import frame
-# import sqlite3
-#
-# app = Flask(__name__)
-# def connect_to_data_base():
-#     connect_to_db1 = sqlite3.connect('communities_data.db')
-#     connect_to_db1.row_factory = sqlite3.Row
-#     cursor = connect_to_db1.cursor()
-#     return cursor
-# def do_a_script(script):
-#     cursor = connect_to_data_base()
-#     with open(script) as script_file:
-#         cursor.executescript(script_file.read())
-#
-# do_a_script('scratch_2.sql')
+from users.models import User
+from users.views import auth
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///qust.db'
+app.config['SECRET_KEY'] = 'Shkolnik iz doti bezmozgliy'
 app.register_blueprint(frame)
+app.register_blueprint(auth)
+login_manager = LoginManager()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+
+db.init_app(app)
+login_manager.init_app(app)
+
+with app.app_context():
+
+    db.create_all()
+
+
+
 app.run(debug=True)
